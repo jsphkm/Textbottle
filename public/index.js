@@ -13,7 +13,7 @@ function premarkupEventHandler(){
 	});
 }
 
-const SERVER_URL = 'localhost:8080/api/auth/login'
+const SERVER_URL = '/api/auth/login';
 
 function getDataFromServer(query, callback){
 	const settings = {
@@ -22,12 +22,16 @@ function getDataFromServer(query, callback){
 			email: query[0],
 			password: query[1]
 		},
+		contentType: 'application/json',
 		dataType: 'json',
 		type: 'GET',
 		success: callback
 	};
-	$.ajax(settings);
+	$.ajax(settings)
+	.done(result => {console.log(result)})
+	.fail(err => console.err(err))
 }
+
 
 function renderResult(item){
 	console.log(item);
