@@ -1,8 +1,10 @@
+'use strict';
+
 function generateCurrentDate(){
-	n =  new Date();
-	y = n.getFullYear();
-	m = n.getMonth() + 1;
-	d = n.getDate();
+	let n =  new Date();
+	let y = n.getFullYear();
+	let m = n.getMonth() + 1;
+	let d = n.getDate();
 	document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
 }
 
@@ -13,9 +15,10 @@ function premarkupEventHandler(){
 	});
 }
 
-const SERVER_URL = '/api/auth/login';
+
 
 function getDataFromServer(query, callback){
+	const SERVER_URL = 'api/auth/login';
 	const settings = {
 		url: SERVER_URL,
 		data: {
@@ -29,7 +32,7 @@ function getDataFromServer(query, callback){
 	};
 	$.ajax(settings)
 	.done(result => {console.log(result)})
-	.fail(err => console.err(err))
+	.fail(err => {console.error(err)})
 }
 
 
