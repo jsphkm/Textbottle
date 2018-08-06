@@ -6,8 +6,7 @@ const accountSchema = mongoose.Schema({
 	firstname: {type: String, required: true, default: ''},
 	lastname: {type: String, required: true, default: ''},
 	email: {type: String, required: true, unique: true},
-	password: {type: String, required: true},
-	picture: {type: String, default: ''}
+	password: {type: String, required: true}
 });
 
 accountSchema.methods.serialize = function() {
@@ -16,8 +15,7 @@ accountSchema.methods.serialize = function() {
 		firstname: this.firstname || '',
 		lastname: this.lastname || '',
 		email: this.email || '',
-		password: this.password,
-		picture: this.picture
+		password: this.password
 	};
 };
 

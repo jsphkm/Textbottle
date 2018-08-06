@@ -13,10 +13,10 @@
 </head>
 <body></body>
     <h1>Textbottle</h1>
-    <a href='./login'>Log in</a>
+    <div class='logoptionsdiv'></div>
     <fieldset>
             <legend>Create Account</legend>
-            <form id='createaccountform' method=post action='#'>
+            <form id='newaccountform' method=post action='#'>
                 <label for='firstname'>First name: </label>
                 <input name='given-name' id='firstname' type='text' placeholder='First name' required autocomplete="given-name">
                 <label for='lastname'>Email: </label>
@@ -31,13 +31,13 @@
             </form>
         </fieldset>
     <fieldset>
-        <legend>Log in</legend>
+        <legend>Sign in</legend>
         <form id='loginform' method=post action='#'>
-            <label for='email'>Email: </label>
-            <input id='email' type='text' placeholder='email' required>
-            <label for='password'>Password: </label>
-            <input id='password' type='password' placeholder='password' required>
-            <button>Log in</button>
+            <label for='loginemail'>Email: </label>
+            <input id='loginemail' type='text' placeholder='email' required>
+            <label for='loginpassword'>Password: </label>
+            <input id='loginpassword' type='password' placeholder='password' required>
+            <button>Sign in</button>
         </form>
     </fieldset>
     

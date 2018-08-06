@@ -3,22 +3,6 @@ const express = require('express');
 const router = express.Router();
 const {Accounts} = require('./models');
 
-router.get('/', (req, res) => {
-	Accounts
-		.find()
-		.then(accounts => {
-			res.json({
-				accounts: accounts.map(
-					(account) => account.serialize()
-				)
-			});
-		})
-		.catch(err => {
-			console.error(err);
-			res.status(500).json({ message: 'Internal server error'});
-		});
-});
-
 router.get('/:id', (req, res) => {
 	Accounts
 		.findById(req.params.id)
