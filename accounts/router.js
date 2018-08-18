@@ -2,15 +2,30 @@ const uuid = require('uuid');
 const express = require('express');
 const router = express.Router();
 const {Accounts} = require('./models');
+const passport = require('passport');
 
-router.get('/:id', (req, res) => {
-	Accounts
-		.findById(req.params.id)
-		.then(post => res.json(post.serialize()))
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+
+router.get('/', jwtAuth, (req, res) => {
+  if (req.user){
+    Accounts
+		.findById(req.user.id)
+		.then(post => res.json(
+      {
+        firstname: post.firstname,
+        lastname: post.lastname,
+        email: post.email
+      }
+    ))
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({ error: 'Internal server error'});
 		})
+  }
+  else {
+    res.status(403);
+  }
 })
 
 router.post('/', (req, res) => {
@@ -130,11 +145,11 @@ router.post('/', (req, res) => {
 // we're just doing this so we have a quick way to see
 // if we're creating users. keep in mind, you can also
 // verify this in the Mongo shell.
-router.get('/', (req, res) => {
-  return Accounts.find()
-    .then(accounts => res.json(accounts.map(account => account.serialize())))
-    .catch(err => res.status(500).json({message: 'Internal server error'}));
-});
+// router.get('/', (req, res) => {
+//   return Accounts.find()
+//     .then(accounts => res.json(accounts.map(account => account.serialize())))
+//     .catch(err => res.status(500).json({message: 'Internal server error'}));
+// });
 
 router.delete('/:id', (req, res) => {
 	Accounts

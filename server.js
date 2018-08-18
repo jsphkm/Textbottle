@@ -13,6 +13,7 @@ mongoose.Promise = global.Promise;
 const {DATABASE_URL, PORT} = require('./config');
 
 const {router: accountsRouter} = require('./accounts');
+const {router: messagesRouter} = require('./messages');
 const {router: authRouter, localStrategy, jwtStrategy} = require('./auth');
 
 passport.use(localStrategy);
@@ -20,15 +21,7 @@ passport.use(jwtStrategy);
 
 app.use('/api/accounts', accountsRouter);
 app.use('/api/auth', authRouter);
-
-
-const jwtAuth = passport.authenticate('jwt', { session: false });
-
-app.get('/api/protected', jwtAuth, (req, res) => {
-  return res.json({
-    data: 'rosebud'
-  });
-});
+app.use('/api/messages', messagesRouter);
 
 app.use('*', function(req, res){
 	res.status(404).json({message: 'Not Found'});
