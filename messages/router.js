@@ -72,9 +72,10 @@ router.put('/', jwtAuth, (req, res) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
-	Accounts
-		.findByIdAndRemove(req.params.id)
+router.delete('/', jwtAuth, (req, res) => {
+  if (req.user) {
+    Messages
+		.findByIdAndRemove(req.body.currentmessageId)
 		.then(() => {
 			res.status(204).json({message: 'success'});
 		})
@@ -82,6 +83,7 @@ router.delete('/:id', (req, res) => {
 			console.error(err);
 			res.status(500).json({error: 'Internal Server Error'});
 		});
+  }
 });
 
 module.exports = {router};

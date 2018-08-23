@@ -53,19 +53,17 @@ function generateFormattingButtonElements(){
 	`
 }
 
-function generatePopoverElements(){
+function generatePanelElements(){
 	return `
-	<div class='popover-inner'>
-		<div class='spacer'></div>
+	<div class='panel-inner'>
 		<ul role='menu'>
 			<li class='list-item'>
-				<a id='popovermessages' role='menuitem'>Writings</a>
-				<li class='list-item list-item-separator'></li>
-				<div class='messagescontainer'></div>
+				<div id='panel-title-writings' role='menuitem'>Account</div>
+				<div class='account-items-container'></div>
 			</li>
-			
 			<li class='list-item'>
-				<div class='logoptionsdiv' role='menuitem'></div>
+				<div id='panel-title-writings' role='menuitem'>Writings</div>
+				<div class='writings-items-container'></div>
 			</li>
 		</ul>
 	</div>
@@ -83,13 +81,40 @@ function generateAccountInfoElements(){
 function generateMessagesList(each){
 	let datestring = generateCurrentDate(each.updatedDate);
 	return `
-	<div class='summary-list'>
+	<div class='summary-list' data-message-id='${each.id}'>
 		<div>
 			<div class='messages-title'>${each.title}</div>
 			<div class='messages-subtitle'>${each.subtitle}</div>
 		</div>
 		<div class='messages-updatedDate'>${datestring}</div>
+		<div class='delete-button-container'><button class='delete-button' tabindex='-1'><img class='delete-img' src='/img/white-delete-icon.svg'/></button></div>
 	</div>
+	
 	<li class='list-item list-item-separator'></li>
+	`
+}
+
+function generateIntroTexteditorElements(){
+	return `
+	<h3 class="article_title" placeholder="New Title">Textbottle</h3>
+	<h4>A beautiful way to write your ideas</h4>
+	<p></p><blockquote>We write to taste life twice, in the moment and in retrospect - Anaïs Nin</blockquote><p></p>
+	<h3>It's About Your Writing</h3>
+	<p>This is an <a href="https://https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a> editor, which means that <i><b>autoformatting</b></i> is applied in this editing space.&nbsp; It is a connected way to visualize your writing.&nbsp;&nbsp;</p>
+	<p>All your writings will be saved automatically and will be accessible in the <i>left panel</i> after you log in or sign up.</p>
+	`
+}
+
+function generateNewTexteditorElements(){
+	return `
+	<h3 class='article_title' placeholder='New Title'></h3>
+	`
+}
+
+function generateSignOutElements(result){
+	return `
+	<div id='signoutfullname'>${result.firstname} ${result.lastname}</div>
+	<div id='signoutemail'>${result.email}</div>
+	<button class='logoutbutton' tabindex='-1'>Sign Out</button>
 	`
 }

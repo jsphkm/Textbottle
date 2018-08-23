@@ -151,9 +151,10 @@ router.post('/', (req, res) => {
 //     .catch(err => res.status(500).json({message: 'Internal server error'}));
 // });
 
-router.delete('/:id', (req, res) => {
-	Accounts
-		.findByIdAndRemove(req.params.id)
+router.delete('/', (req, res) => {
+  if (req.user){
+    Accounts
+		.findByIdAndRemove(req.user.id)
 		.then(() => {
 			res.status(204).json({message: 'success'});
 		})
@@ -161,6 +162,7 @@ router.delete('/:id', (req, res) => {
 			console.error(err);
 			res.status(500).json({error: 'Internal Server Error'});
 		});
+  }
 });
 
 router.put('/:id', (req, res) => {

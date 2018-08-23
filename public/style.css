@@ -10,12 +10,30 @@ a, u {
     text-decoration: none;
 }
 
-#texteditor * {
+/* #texteditor * {
 	padding-left: 50px;
 	padding-right: 50px;
 	max-width: 740px;
 	margin-left: auto;
 	margin-right: auto;
+} */
+
+/* #texteditor {
+	padding-left: 50px;
+	padding-right: 50px;
+	max-width: 740px;
+	margin-left: auto;
+	margin-right: auto;
+} */
+
+.active {
+	background-color: dodgerblue;
+	color: white;
+}
+
+.active .messages-updatedDate {
+	color: white;
+	opacity: 0.8;
 }
 
 fieldset {
@@ -31,27 +49,28 @@ fieldset {
 
 body {
 	font-family: 'Roboto', sans-serif;
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 1.5;
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 1.5;
 	color: #24292e;
 }
 
-header, .topnav-wrapper {
+header {
 	z-index: 10;
-	display: flex;
-	align-items: center;
-	width: 100%;
-	float: left;
 	height: 60px;
-	background-color: rgba(255,255,255,0.94);
-	/* TODO: Don't delete below - Reserve the position fixed for mobile */
+	background-color: rgba(255,255,255,0.9);
 	position: fixed;
 }
 
+header, .topnav-wrapper {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
 .topnav-wrapper {
-	box-shadow: 0 0 1px 0px #e8e8e8;
-	border-bottom: 1px solid rgba(36,41,46,0.05);
+	box-shadow: 0 0 3px 0px #e8e8e8;
+	/* border-bottom: 1px solid rgba(36,41,46,0.05); */
 }
 
 button {
@@ -70,11 +89,12 @@ nav {
 section {
 	transition: margin-left 0.3s ease-in-out;
 	margin-left: 0;
+	margin-bottom: 100px;
 	/* TODO: Don't delete below - Reserve the position fixed for mobile */
 	/* transition: transform 0.3s ease-in-out; */
 }
 
-.hidehamburger {
+.hidepanel {
 	transform: translateX(-320px);
 }
 
@@ -88,16 +108,9 @@ section {
 	height: 60px;
 }
 
-#tagsdiv {
-	display: none;
-}
-
 .title {
 	font-size: 18px;
 	font-weight: 600;
-	flex: 1;
-	justify-content: left;
-    display: flex;
 }
 
 .box-left {
@@ -106,10 +119,23 @@ section {
 	width: 70px;
 }
 
+.box-right {
+	position: absolute;
+	right: 0;
+	padding: 0;
+	height: 100%;
+	width: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .divider{
 	z-index: -1;
-	background-color: rgba(0,0,0,0.005);
-	border-right: 1px solid rgba(0,0,0,0.04);
+	/* background-color: rgba(0,0,0,0.005); */
+	/* background-color: rgba(30,50, 100, 0.03); */
+	/* border-right: 1px solid rgba(0,0,0,0.04); */
+	border-right: 1px solid rgba(30,50, 100, 0.07);
 	position: fixed;
     height: 100%;
     width: 320px;
@@ -149,20 +175,11 @@ section {
 	overflow: hidden;
 }
 
-.popoverburgercontainer {
-	height: 50px;
-}
-
 .hamburgericon .bar {
 	transition: all 0.2s ease-in-out;
 }
 
-.accountinfo {
-	display: none;
-}
-
 .autosavestatus {
-	font-style: italic;
 	margin-top: auto;
 	margin-bottom: auto;
 	font-size: 14px;
@@ -175,17 +192,9 @@ section {
     background-color: blue;
 } */
 
-.box-right {
-	display: flex;
-    flex: 1;
-    justify-content: flex-end;
-	padding: 0;
-	height: 100%;
-}
-
-.firstname {
+.firstname, .loginbutton {
 	color: dodgerblue;
-	padding: 0 25px;
+	padding: 0;
 	font-size: 15px;
 	border: none;
 	height: 100%;
@@ -195,20 +204,19 @@ section {
 	cursor: pointer;
 }
 
-.popover-inner ul {
+.panel-inner ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
-.popover-inner .box-left {
+.panel-inner .box-left {
 	height: 50px;
 }
 
-.list-item a, .list-item > div {
+/* .list-item > div {
 	padding: 7px 25px;
 	font-size: 13.8px;
-	/* color: rgba(36, 41, 46, 0.6); */
 	text-decoration: none;
 	background-image: none;
 	line-height: 2.7;
@@ -217,32 +225,35 @@ section {
     background-image: linear-gradient(to left,rgba(36, 41, 46, 1),rgba(36, 41, 46, 1));
 	background-repeat: repeat-y;
 	transition: background-position 0.5s;
-}
+} */
 
-.list-item a:hover, .list-item a:focus {
+/* .list-item a:hover, .list-item a:focus {
 	color: rgba(36, 41, 46, 1);
 	background-size: 4px 9em;
     background-position: 0em 0;
     background-image: linear-gradient(to left,rgba(36, 41, 46, 1),rgba(36, 41, 46, 1));
 	background-repeat: repeat-y;
-}
+} */
 
 .list-item-separator {
 	border-top: 1px solid rgba(36, 41, 46, 0.05);
-	margin: 0px 25px;
+	margin: 0px 0px 0px 25px;
 }
 
 .summary-list {
-	padding: 7px 15px 7px 25px;
+	padding: 6px 50px 6px 25px;
+	position: relative;
 }
 
 .summary-list:hover {
-	background-color: rgba(36, 41, 46, 0.08);
+	/* background-color: rgba(36, 41, 46, 0.08); */
+	cursor: pointer;
 }
 
-#popovermessages {
+#panel-title-writings {
 	font-size: 24px;
 	font-weight: 500;
+	padding: 25px 15px 10px 25px;
 }
 
 /* blockquote {
@@ -259,6 +270,10 @@ blockquote p {
     background-color: #eee;
 } */
 
+main {
+	position: relative;
+}
+
 article {
 	font-family: 'Roboto', sans-serif;
 	/* padding: 20px 10px 10px 10px; */
@@ -269,12 +284,20 @@ article {
 	-webkit-hyphenate-limit-before: 2;
 	-webkit-hyphenate-limit-after: 3;
 	-webkit-hyphenate-limit-lines: 2;
+
+	/* position: relative; */
+	padding-top: 30px;
+	padding-left: 50px;
+	padding-right: 50px;
+	max-width: 740px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 blockquote {
     font-style: italic;
     margin: 0;
-	font-size: 19px;
+	font-size: 18px;
 	font-family: 'Georgia';
 	padding-left: 17px;
 	margin-left: -20px;
@@ -293,7 +316,7 @@ p, blockquote {
 	margin-bottom: 0;
 }
 
-.popover li {
+.panel li {
 	font-family: 'Roboto', serif;
 }
 
@@ -372,12 +395,16 @@ div[contenteditable=true] {
 	cursor: text;
 }
 
-.logoptionsdiv {
-	display: inline-flex;
+.logoptionscontainer {
+	/* display: flex; */
 }
 
 .logoptionsdiv button {
 	padding: 0;
+}
+
+.logoptionsdiv button:hover {
+	cursor: pointer;
 }
 
 #formattingoptions {
@@ -415,7 +442,7 @@ div[contenteditable=true] {
 }
 
 #formattingoptions button:hover {
-	color: #34e79a;
+	color: lightskyblue;
 	cursor: pointer;
 	opacity: 1;
 }
@@ -451,15 +478,41 @@ div[contenteditable=true] {
 }
 
 #texteditor {
-	/* max-width: 740px; */
-	/* margin: 0 auto; */
-	/* padding: 40px 40px 80px 40px; */
-	padding-top: 60px;
-	
+	padding-top: 30px;
 }
 
 #texteditor:focus {
-	outline:0;
+	outline: 0;
+}
+
+.formatting-toolbar-container {
+	position: absolute;
+	display: none;
+	visibility: hidden;
+}
+
+.formatting-toolbar-active {
+	display: inline-block;
+	visibility: visible;
+	animation: pop-upwards 180ms forwards linear;
+	transition: all 75ms ease-out;
+}
+
+@keyframes pop-upwards {
+	0% {
+		opacity: 0;
+		transform: matrix(0.97, 0, 0, 1, 0, -12);
+	}
+	40% {
+		opacity: 1;
+		transform: matrix(1, 0, 0, 1, 0, 1);
+	}
+	70% {
+		transform: matrix(1, 0, 0, 1, 0, 0);
+	}
+	100% {
+		transform: matrix(1, 0, 0, 1, 0, 0);
+	}
 }
 
 .messages-title, .messages-subtitle {
@@ -471,35 +524,30 @@ div[contenteditable=true] {
 
 .messages-subtitle {
 	font-size: 13px;
+	line-height: 1.2;
 }
 
 .messages-title {
 	font-size: 15px;
 	font-weight: 500;
+	padding: 5px 0px 5px 0px;
+	line-height: 1;
 }
 
 .messages-updatedDate {
-	padding: 0;
-	font-size: 13px;
+	font-size: 12px;
 	color: rgba(0,0,0,0.5);
-	padding: 0;
+	padding: 1.5px 0px;
 }
 
-img {
-	width: calc(100% + 100px);
-	margin-right: calc(-50px);
-	margin-left: calc(-50px);
-
-	/* width: 100vw;
-	margin-left: calc((-100vw + 740px) / 2);
-	margin-right: calc((-100vw + 740px) / 2); */
+.account-items-container {
+	padding: 6px 15px 6px 25px;
 }
 
 .signcontainer {
 	padding: 50px 10px 10px 10px;
-    width: 280px;
-    position: fixed;
-    top: 60px;
+	width: 280px;
+	position: absolute;
 	left: 20px;
 	height: 100%;	
 }
@@ -558,19 +606,67 @@ img {
 	font-size: 15px;
 }
 
+.logoutbutton {
+	margin: 15px 0px;
+	padding: 0;
+}
+
 .signupparentbutton {
 	border: 1px solid gray;
-    border-radius: 3px;
-    margin-left: 5px;
-    padding: 3px 10px;
-    font-size: 14px;
-    font-weight: 400;
+	border-radius: 3px;
+	margin-left: 5px;
+	padding: 3px 10px;
+	font-size: 14px;
+	font-weight: 400;
 }
 
 .newtoTextbottle {
 	font-size: 14px;
 }
 
+#signoutfullname {
+	font-size: 16px;
+	font-weight: 500;
+}
+
+#signoutemail {
+	font-size: 14px;
+	line-height: 1.2;
+}
+
+.article-menu {
+	padding: 0px 0px 10px 0px;
+	border-bottom: 1px solid rgba(36, 41, 46, 0.05);
+	position: relative;
+}
+
+.new-icon {
+	height: 25px;
+}
+
+.delete-button-container {
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50px;
+}
+
+.delete-button {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+}
+
+.delete-img {
+	width: 21px;
+}
+
+.delete-button:hover {
+	cursor: pointer;
+}
 
 
 

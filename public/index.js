@@ -59,13 +59,65 @@ function getSelectionText() {
 			start = selectionRange.startContainer;
 			end = selectionRange.endContainer;
 
-			let newformattingdiv = $('<div></div>').attr({id: 'formattingoptions'})
+			let range = selection.getRangeAt(0);
+			let boundary = range.getBoundingClientRect();
+			//console.log(boundary);
 
-			newformattingdiv.append(generateFormattingButtonElements());
-			$('#formattingoptionscontainer').html(newformattingdiv);
+			let relativeBoundary = {},
+					positions = {},
+					middleBoundary,
+					containerWidth = this.window.innerWidth,
+					toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0],
+					//toolbarHeight = toolbarElement.offsetHeight,
+					//toolbarWidth = toolbarElement.offsetWidth;
+					toolbarHeight = 45,
+					toolbarWidth = 230,
+					halfOffsetWidth = toolbarWidth / 2,
+					buttonHeight = 45,
+					defaultLeft = 0 - halfOffsetWidth,
+					headerheight = 60,
+					paneswidth = 320;
+			
+			positions.top = this.window.pageYOffset;
+			positions.left = this.window.pageXOffset;
+
+			middleBoundary = boundary.left + (boundary.width / 2);
+			
+			if (document.getElementsByTagName('section')[0].classList.contains('hidesection')) {
+				positions.left = defaultLeft + middleBoundary - paneswidth;
+			}
+			else {
+				positions.left = defaultLeft + middleBoundary;
+			}
+			
+			positions.top += boundary.bottom - toolbarHeight;
+
+			// if (middleBoundary < halfOffsetWidth) {
+			// 	positions.left = defaultLeft + halfOffsetWidth - paneswidth;
+			// }
+			// else if ((containerWidth - middleBoundary) < halfOffsetWidth) {
+			// 	position.right = 0;
+			// }
+			// else {
+			// 	positions.left = defaultLeft + middleBoundary - paneswidth;
+			// }
+
+			
+			//let d = document.getElementsByClassName('formatting-toolbar-container');
+			// d.style.top = boundary.y + 26 + 'px';
+			// d.style.left = boundary.x + 'px';
+			['top', 'left', 'right'].forEach(function(key) {
+				toolbarElement.style[key] = positions[key] + 'px';
+			})
+
+			//$('#formatting-toolbar-container').html(newformattingdiv);
+			toolbarElement.classList.add('formatting-toolbar-active');
 		}
 		if (selection.type == 'Caret') {
-			$('#formattingoptionscontainer').html('');
+			toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0]
+			if (toolbarElement.classList.contains('formatting-toolbar-active')){
+				toolbarElement.classList.remove('formatting-toolbar-active');
+			}
 		}
 	}
 }
@@ -269,7 +321,6 @@ function addressinputHandler(){
 			selection.removeAllRanges();
 			selection.addRange(selectionRange);
 			document.execCommand('createLink', false, `https://${address}`);
-			
 		}
 		return false;
 	})
@@ -289,7 +340,7 @@ function nextNode(foo) {
 	}
 }
 
-function loginRequest(query, callback){
+function loginReq(query){
 	const SERVER_URL = '/api/auth/login';
 	const settings = {
 		type: 'POST',
@@ -300,37 +351,51 @@ function loginRequest(query, callback){
 		}),
 		dataType: "json",
   	contentType: "application/json",
-		success: callback
 	};
-	$.ajax(settings)
-	.done(result => {
-		console.log('signed in');
-		localStorage.setItem("token", result.authToken);
-		renderLoggedInElements();
-		$('.signinForm').html('');
-	})
-	.fail(err => {console.error(err)})
+	return $.ajax(settings);
 }
 
-// TODO: Fix this part so that the first name appears on the page
 function renderLoggedInElements(){
 	if (localStorage.getItem('token') == null) {
-		console.log($('.logoptionsdiv'));
-		$('.logoptionsdiv').html(`<button class='loginbutton'>Sign In</button>`);
-		$('.accountinfo').html('');
-
-		//Generate the sign in form inside the left panel
-		let signinformDiv = $('<div />', {'class': 'signinForm'});
-		signinformDiv.html(generateSignInElements());
-		$('.popover').html(signinformDiv);
+		$('.logoptions').html(`<button class='loginbutton'>Sign In</button>`);
+		$('.panel').html(generateSignInElements());
+		$('#texteditor').html(generateIntroTexteditorElements());
 	}
 	else {
-		fetchaccountData();
-		fetchmessagesData();
-		
-		//$('.accountinfo').html(`<button class='settingsbutton'>Settings</button>`);
-		$('.popover').html(generatePopoverElements());
+		//history.pushState(null, null, 'me');
+		$('.panel').fadeOut(100, function(){
+			$('.panel').hide()
+				.html(generatePanelElements()).promise()
+				.then(function(){
+					$('#texteditor').html(generateNewTexteditorElements());
+					fetchaccountData()
+					.done(result => {
+						$('.logoptions').html(`<button class='firstname'></button>`);
+						$('.firstname').html(result.firstname);
+						$('.account-items-container').html(generateSignOutElements(result));
+					}).fail(err => {console.err(err)})
+					fetchmessagesData()
+					.done(result => {
+						renderWritingsList(result);
+						deletebuttonHandler();
+					}).fail(err => {console.error(err)})
+				})
+				.then($('.panel').fadeIn(200, function(){
+					$('#texteditor').focus();
+				}));
+		})
 	}
+}
+
+function renderWritingsList(result){
+	$('.writings-items-container').html('');
+	let listofmessagescontainer = document.createElement('div');
+	listofmessagescontainer.className = 'listofmessagescontainer';
+	result.forEach(each => {
+		listofmessagescontainer.insertAdjacentHTML('beforeend', generateMessagesList(each));
+		tempBuffer[each.id] = each.fullcontent;
+	});
+	$('.writings-items-container').html(listofmessagescontainer);
 }
 
 function settingsHandler(){
@@ -349,16 +414,11 @@ function fetchaccountData(){
 				Authorization: "Bearer " + localStorage.getItem('token')
 			}
 		};
-		$.ajax(settings)
-		.done(result => {
-			$('.firstname').html(result.firstname);
-			$('.logoptionsdiv').html(`<button class='logoutbutton'>Sign Out</button>`);
-		})
-		.fail(err => {console.error(err)})
+		return $.ajax(settings)
 }
 
 
-function createAccount(query, callback){
+function createAccount(query){
 	const SERVER_URL = '/api/accounts';
 	const settings = {
 		type: 'POST',
@@ -370,44 +430,37 @@ function createAccount(query, callback){
 			password: query.confpassquery
 		}),
 		dataType: "json",
-		contentType: "application/json",
-		success: callback
+		contentType: "application/json"
 	};
-	$.ajax(settings)
-	.done(result => {console.log(result)})
-	.fail(err => {console.error(err)})
-}
-
-
-function renderResult(item){
-	console.log(item);
-}
-
-function displaySignedInData(data){
-	//const results = data.items.map((item, index) => renderResult(item));
-  //$('.js-search-results').html(results);
+	return $.ajax(settings)
 }
 
 function fetchmessagesData(){
 	const SERVER_URL = '/api/messages';
-		const settings = {
-			type: 'GET',
-			url: SERVER_URL,
-			headers: {
-				Authorization: "Bearer " + localStorage.getItem('token')
-			}
-		};
-		$.ajax(settings)
-		.done(result => {
-			//result.sort((a, b) => b.updatedDate.localeCompare(a.updatedDate));
-			let listofmessagescontainer = document.createElement('div');
-			listofmessagescontainer.className = 'listofmessagescontainer';
-			result.forEach(each => {
-				listofmessagescontainer.insertAdjacentHTML('beforeend', generateMessagesList(each));
-			});
-			$('.messagescontainer').html(listofmessagescontainer);
-		})
-		.fail(err => {console.error(err)})
+	const settings = {
+		type: 'GET',
+		url: SERVER_URL,
+		headers: {
+			Authorization: "Bearer " + localStorage.getItem('token')
+		}
+	};
+	return $.ajax(settings)
+}
+
+function sidepaneHandler(){
+	$(document).delegate('.summary-list', 'click', function(e){
+		let messageid = $(this).data("message-id")
+		//history.pushState(null, null, _href);
+		loadContent(messageid);
+		currentmessageId = messageid;
+		$('.summary-list').removeClass('active');
+		$(this).addClass('active');
+		return false;
+	})
+}
+
+function loadContent(messageid){
+	$('#texteditor').html(tempBuffer[messageid]);
 }
 
 function watchSubmit(){
@@ -417,13 +470,17 @@ function watchSubmit(){
 		const passqueryTarget = $(e.currentTarget).find('#loginpassword');
 		const emailquery = emailqueryTarget.val();
 		const passquery = passqueryTarget.val();
-		emailqueryTarget.val('');
-		passqueryTarget.val('');
 		let query = {emailquery, passquery};
-		loginRequest(query, displaySignedInData);
+		loginReq(query).done(data => asyncLogIn(data)).fail(err => console.log(err));
 	})
 
-	$(document).on('submit', '#newaccountform', function(e){
+	function asyncLogIn(result){
+		console.log('signed in');
+		localStorage.setItem("token", result.authToken);
+		renderLoggedInElements();
+	}
+
+	$(document).on('submit', '#signupform', function(e){
 		e.preventDefault();
 		const firstnamequeryTarget = $(e.currentTarget).find('#firstname');
 		const lastnamequeryTarget = $(e.currentTarget).find('#lastname');
@@ -434,13 +491,19 @@ function watchSubmit(){
 		const lastnamequery = lastnamequeryTarget.val();
 		const emailquery = emailqueryTarget.val();
 		const confpassquery = confpassqueryTarget.val();
-		firstnamequeryTarget.val('');
-		lastnamequeryTarget.val('');
-		emailqueryTarget.val('');
-		passqueryTarget.val('');
-		confpassqueryTarget.val('');
+		// firstnamequeryTarget.val('');
+		// lastnamequeryTarget.val('');
+		// emailqueryTarget.val('');
+		// passqueryTarget.val('');
+		// confpassqueryTarget.val('');
+		useremail = emailquery;
+		userpass = confpassquery;
 		let query = {firstnamequery, lastnamequery, emailquery, confpassquery};
-		createAccount(query, displaySignedInData);
+		createAccount(query)
+		.done(result => {
+			// console.log(result);
+		})
+		.fail(err => {console.error(err)});
 	})
 }
 
@@ -452,19 +515,18 @@ function signinbuttonHandler(){
 
 function createaccountHandler(){
 	$(document).on('click', '.createaccountLink', function(){
-		$('.popover').html(generateCreateAccountElements());
+		$('.panel').html(generateCreateAccountElements());
 	})
 
 	$(document).on('click', '.signupLink', function(){
-		$('.popover').html(generateSignInElements());
+		$('.panel').html(generateSignInElements());
 	})
 }
 
 function logoutRequest(){
 	$(document).on('click', '.logoutbutton', function() {
 		localStorage.clear();
-		console.log(localStorage.getItem('token'));
-		console.log('signed out: locstorage cleared!');
+		console.log('signed out');
 		$('.firstname').html('');
 		renderLoggedInElements();
 	})
@@ -486,6 +548,9 @@ let address;
 let profileinfo;
 let timeoutId;
 let currentmessageId;
+let useremail;
+let userpass;
+let tempBuffer = {};
 
 function onchangedocumentHandler(){
 	document.execCommand('defaultParagraphSeparator', false, 'p');
@@ -514,6 +579,7 @@ function onchangedocumentHandler(){
 			// startRangeNode = range.startContainer;
 	
 			//node = selection.focusNode.parentNode;
+			
 			getSelectionText();
 
 			// $(this).on('input keyup', function(e){
@@ -522,11 +588,26 @@ function onchangedocumentHandler(){
 			// 	
 			// })
 		}
+		if (e.target.activeElement.contentEditable !== 'true') {
+			toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0]
+			if (toolbarElement.classList.contains('formatting-toolbar-active')){
+				toolbarElement.classList.remove('formatting-toolbar-active');
+			}
+		}
+	});
+
+	$(document).on('blur', '#texteditor', function(e){
+		toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0]
+			if (toolbarElement.classList.contains('formatting-toolbar-active')){
+				toolbarElement.classList.remove('formatting-toolbar-active');
+			}
 	});
 
 	let editable = document.getElementById('texteditor');
 	editable.addEventListener('input', function(e) {
-		autosaveHandler();
+		if (localStorage.getItem('token') !== null) {
+			autosaveHandler();
+		}
 	});
 
 	$(document).on('keydown', '#texteditor', function(e){
@@ -604,17 +685,8 @@ function onchangedocumentHandler(){
 
 function hamburgerHandler() {
 	$('.hamburgerbutton').on('click', function(){
-		$('nav').toggleClass('hidehamburger');
+		$('nav').toggleClass('hidepanel');
 		$('section').toggleClass('hidesection');
-		
-		// if ($(document.activeElement) && $(document.activeElement).attr('class')){
-		// 	if ($(document.activeElement).attr('class').includes('hbtn-section')) {
-		// 		$('.hbtn-popover').focus();
-		// 	}
-		// 	else if ($(document.activeElement).attr('class').includes('hbtn-popover')) {
-		// 		$('.hbtn-section').focus();
-		// 	}
-		// }
 	})
 }
 
@@ -633,50 +705,43 @@ function autosaveHandler(){
 				titles.push($.trim($(this).text()));
 			}
 		})
-		
+
+		let fullcontentElements = document.querySelector('#texteditor').innerHTML;
 		let messageString = {
-			//currentmessageId: currentmessageId,
-			fullcontent: $('#texteditor').children(),
-			// fullcontent: $('#texteditor').html(),
+			fullcontent: fullcontentElements,
 			title: titles[0] ? titles[0] : 'Untitled message',
 			subtitle: titles[1] ? titles[1] : 'No subtitle'
 		}
 
 		if (currentmessageId) {
-			putmessage(messageString, donothing);
+			putmessage(messageString)
+			.done(() => {
+				$('.autosavestatus').html('Updated');
+				fetchmessagesData()
+				.done(result => {
+					renderWritingsList(result);
+					deletebuttonHandler();
+				}).fail(err => {console.error(err)})
+			})
+			.fail(err => {console.error(err)})
 		}
 		else {
-			postmessage(messageString, donothing);
+			postmessage(messageString)
+			.done(result => {
+				$('.autosavestatus').html('Saved');
+				currentmessageId = result.id;
+				fetchmessagesData()
+				.done(result => {
+					renderWritingsList(result);
+					deletebuttonHandler();
+				}).fail(err => {console.error(err)})
+			})
+			.fail(err => {console.error(err)})
 		}
-	}, 2000);
+	}, 3000);
 }
 
-function donothing(){};
-
-function popovermenuHandler(){
-	$('#popovermessages').on('click', function(){
-		fetchmessagesData();
-	})
-}
-
-function savebuttonHandler(){
-	$('#savebutton').on('click', function(){
-		let titles = [];
-		$('#texteditor').children().each(function(){
-			if($(this).text().length > 0 && titles.length < 2){
-				titles.push($.trim($(this).text()));
-			}
-		})
-		let messageString = {
-			fullcontent: $('#texteditor').children(),
-			title: titles[0] ? titles[0] : 'Untitled message',
-			subtitle: titles[1] ? titles[1] : 'No subtitle'
-		}
-		postmessage(messageString, donothing);
-	})
-}
-
-function postmessage(query, callback){
+function postmessage(query){
 	const SERVER_URL = '/api/messages';
 	const settings = {
 		headers: {
@@ -690,23 +755,16 @@ function postmessage(query, callback){
 			subtitle: query.subtitle
 		}),
 		dataType: "json",
-		contentType: "application/json",
-		success: callback
+		contentType: "application/json"
 	};
-	$.ajax(settings)
-	.done(result => {
-		console.log(result);
-		$('.autosavestatus').html('Saved');
-		currentmessageId = result.id;
-	})
-	.fail(err => {console.error(err)})
+	return $.ajax(settings);
 }
 
-function putmessage(query, callback){
+function putmessage(query){
 	const SERVER_URL = '/api/messages';
 	const settings = {
 		headers: {
-			Authorization: "Bearer " + localStorage.getItem('token')
+			Authorization: 'Bearer ' + localStorage.getItem('token')
 		},
 		type: 'PUT',
 		url: SERVER_URL,
@@ -716,20 +774,65 @@ function putmessage(query, callback){
 			title: query.title,
 			subtitle: query.subtitle
 		}),
-		dataType: "json",
-		contentType: "application/json",
-		success: callback
+		dataType: 'json',
+		contentType: 'application/json'
 	};
-	$.ajax(settings)
-	.done(result => {
-		$('.autosavestatus').html('Updated');
-		//currentmessageId = result.id;
+	return $.ajax(settings);
+}
+
+function deletemessage(query){
+	const SERVER_URL = '/api/messages';
+	const settings = {
+		headers: {
+			Authorization: 'Bearer ' + localStorage.getItem('token')
+		},
+		type: 'DELETE',
+		url: SERVER_URL,
+		data: JSON.stringify({
+			currentmessageId: query.currentmessageId
+		}),
+		dataType: 'json',
+		contentType: 'application/json'
+	};
+	return $.ajax(settings);
+}
+
+function renderToolbarElements(){
+	$('#formattingoptions').append(generateFormattingButtonElements());
+}
+
+function newWritingButtonHandler(){
+	$('.newwriting-button').on('click', function(){
+		if (currentmessageId){
+			currentmessageId = null;
+		}
+		$('#texteditor').html(generateNewTexteditorElements());
+		$('.listofmessagescontainer > .summary-list').removeClass('active');
+		//$('#texteditor').focus();
 	})
-	.fail(err => {console.error(err)})
+}
+
+function deletebuttonHandler(){
+	$(document).on('click', '.delete-button', function(e){
+		deletemessage({currentmessageId: currentmessageId})
+		.done(() => {
+			fetchmessagesData()
+			.done(result => {
+				renderWritingsList(result);
+				deletebuttonHandler();
+				if (currentmessageId){
+					currentmessageId = null;
+				}
+				$('#texteditor').html(generateNewTexteditorElements());
+				$('.listofmessagescontainer > .summary-list').removeClass('active');
+			})
+		});
+	})
 }
 
 function loadmaster(){
-	$('#texteditor').focus();
+	newWritingButtonHandler();
+	renderToolbarElements();
 	onchangedocumentHandler();
 	watchSubmit();
 	renderLoggedInElements();
@@ -740,8 +843,7 @@ function loadmaster(){
 	formattingtoolsHandler();
 	addressinputHandler();
 	hamburgerHandler();
-	popovermenuHandler();
-	savebuttonHandler();
+	sidepaneHandler();
 }
 
 $(loadmaster);
