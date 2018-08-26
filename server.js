@@ -12,14 +12,14 @@ mongoose.Promise = global.Promise;
 
 const {DATABASE_URL, PORT} = require('./config');
 
-const {router: accountsRouter} = require('./accounts');
+const {router: usersRouter} = require('./users');
 const {router: messagesRouter} = require('./messages');
 const {router: authRouter, localStrategy, jwtStrategy} = require('./auth');
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-app.use('/api/accounts', accountsRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/messages', messagesRouter);
 

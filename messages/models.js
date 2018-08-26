@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const messagesSchema = mongoose.Schema({
-		account_id: {type: String, default: ''},
+		user_id: {type: String, default: ''},
     createdDate: {type: Date, default: Date.now},
     updatedDate: {type: Date, default: Date.now},
     title: {type: String, default: 'Untitled'},
@@ -13,7 +13,7 @@ const messagesSchema = mongoose.Schema({
 
 messagesSchema.methods.serialize = function() {
 	return {
-		account_id: this.account_id,
+		user_id: this.user_id,
 		id: this._id,
 		createdDate: this.createdDate || '',
 		updatedDate: this.updatedDate || '',

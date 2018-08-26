@@ -36,19 +36,13 @@ a, u {
 	opacity: 0.8;
 }
 
-fieldset {
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
 .hide {
 	display: none;
 	opacity: 0;
 }
 
 body {
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', Helvetica, sans-serif;
 	font-size: 17px;
 	font-weight: 400;
 	line-height: 1.5;
@@ -56,7 +50,7 @@ body {
 }
 
 header {
-	z-index: 10;
+	z-index: 1000;
 	height: 60px;
 	background-color: rgba(255,255,255,0.9);
 	position: fixed;
@@ -78,10 +72,16 @@ button {
 	background-color: transparent;
 }
 
+button:hover {
+	cursor: pointer;
+}
+
 nav {
+	background-color: white;
+  z-index: 100;
 	width: 320px;
 	height: 100vh;
-    overflow-y: auto;
+  overflow-y: auto;
 	position: fixed;
 	transition: transform 0.3s ease-in-out;
 }
@@ -92,6 +92,8 @@ section {
 	margin-bottom: 100px;
 	/* TODO: Don't delete below - Reserve the position fixed for mobile */
 	/* transition: transform 0.3s ease-in-out; */
+	position: fixed;
+	width: 100%;
 }
 
 .hidepanel {
@@ -99,9 +101,10 @@ section {
 }
 
 .hidesection {
-	margin-left: 320px;
+	/* margin-left: 320px; */
 	/* TODO: Don't delete below - Reserve the position fixed for mobile */
 	/* transform: translateX(320px); */
+	width: auto;
 }
 
 .spacer {
@@ -275,7 +278,7 @@ main {
 }
 
 article {
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', Helvetica, sans-serif;
 	/* padding: 20px 10px 10px 10px; */
 	word-break: break-word;
 	word-wrap: break-word;
@@ -298,14 +301,14 @@ blockquote {
     font-style: italic;
     margin: 0;
 	font-size: 18px;
-	font-family: 'Georgia';
+	font-family: Georgia, 'Times New Roman', Times, serif;
 	padding-left: 17px;
 	margin-left: -20px;
 	border-left: 3px solid rgba(36, 41, 46, 1);
 }
 
 p, li {
-	font-family: 'Merriweather', serif;
+	font-family: 'Merriweather', Georgia, serif;
 	font-size: 15px;
 	line-height: 1.9;
 	font-weight: 400;
@@ -317,11 +320,11 @@ p, blockquote {
 }
 
 .panel li {
-	font-family: 'Roboto', serif;
+	font-family: 'Roboto', Helvetica, sans-serif;
 }
 
 .article_title {
-	font-family: 'Roboto';
+	font-family: 'Roboto', Helvetica, sans-serif;
 	margin-top: 0;
 	margin-bottom: 0;
 	padding-top: 5px;
@@ -332,7 +335,7 @@ p, blockquote {
 
 .article_subtitle {
 	/* letter-spacing: -0.26px; */
-	font-family: 'Merriweather';
+	font-family: 'Merriweather', Georgia, serif;
 	color: rgba(36, 41, 46, 0.5);
 	margin: 0;
 	margin-top: 5px;
@@ -359,7 +362,7 @@ h4 {
 }
 
 code {
-    font-family: 'Menlo';
+    font-family: 'Menlo', 'Courier New', Courier, monospace;
     font-size: 14px;
     padding: 2px;
     background-color: #eee;
@@ -552,10 +555,10 @@ div[contenteditable=true] {
 	height: 100%;	
 }
 
-.signcontainer legend {
+.signin-title, .signup-title {
 	font-weight: 500;
     font-size: 25px;
-    margin-top: 10px;
+		margin-top: 10px;
 }
 
 .createaccountDiv, .signinDiv {
@@ -590,7 +593,7 @@ div[contenteditable=true] {
 	border: 1px solid rgba(0,0,0,0.5);
 }
 
-#loginform button, #signupform button {
+.signin-button, .signup-button {
 	background-color: dodgerblue;
     color: white;
     padding: 7px;
@@ -637,6 +640,9 @@ div[contenteditable=true] {
 .article-menu {
 	padding: 0px 0px 10px 0px;
 	border-bottom: 1px solid rgba(36, 41, 46, 0.05);
+}
+
+.article-menu-container {
 	position: relative;
 }
 
@@ -666,6 +672,27 @@ div[contenteditable=true] {
 
 .delete-button:hover {
 	cursor: pointer;
+}
+
+.error-message {
+	color: red;
+	font-size: 13px;
+}
+
+@media(min-width: 735px) {
+	section {
+		transition: margin-left 0.3s ease-in-out;
+		margin-left: 0;
+		margin-bottom: 100px;
+		/* TODO: Don't delete below - Reserve the position fixed for mobile */
+		/* transition: transform 0.3s ease-in-out; */
+	}
+
+	.hidesection {
+		margin-left: 320px;
+		/* TODO: Don't delete below - Reserve the position fixed for mobile */
+		/* transform: translateX(320px); */
+	}
 }
 
 

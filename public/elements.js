@@ -1,8 +1,7 @@
 function generateCreateAccountElements(){
 	return `
 	<div class='signcontainer'>
-		<fieldset>
-			<legend>Sign up</legend>
+			<div class='signup-title'>Sign up</div>
 			<div class='signinDiv'>
 				or <a class='signupLink'>sign in to your account</a>
 			</div>
@@ -12,14 +11,13 @@ function generateCreateAccountElements(){
 				<label for='lastname'></label>
 				<input name='family-name' id='lastname' type='text' placeholder='Last name' required autocomplete='family-name'>
 				<label for='email'></label>
-				<input name='email' id='email' type='text' placeholder='Email' required autocomplete='home email'>
+				<input name='email' id='email' type='email' placeholder='Email' required autocomplete='home email'>
 				<label for='password'></label>
 				<input name='pass' id='password' type='password' placeholder='Password' required autocomplete='new-password'>
 				<label for='confpassword'></label>
 				<input name='pass' id='confpassword' type='password' placeholder='Confirm password' required autocomplete='current-password'>
-				<button>Sign up</button>
+				<input class='signup-button' type='submit' value='Sign up'>
 			</form>
-		</fieldset>
 	</div>
 	`
 }
@@ -27,17 +25,15 @@ function generateCreateAccountElements(){
 function generateSignInElements(){
 	return `
 	<div class='signcontainer'>
-		<fieldset>
-			<legend>Sign in</legend>
+			<div class='signin-title'>Sign in</div>
 			<div class='createaccountDiv'>or <a class='createaccountLink'>create an account</a></div>
 			<form id='loginform' method=post action='#'>
 					<label for='loginemail'></label>
-					<input id='loginemail' type='text' placeholder='Email' required>
+					<input id='loginemail' type='email' placeholder='Email' required>
 					<label for='loginpassword'></label>
 					<input id='loginpassword' type='password' placeholder='Password' required>
-					<button>Sign in</button>
+					<input class='signin-button' type='submit' value='Sign in'>
 			</form>
-		</fieldset>
 	</div>
 	`
 }
@@ -87,7 +83,7 @@ function generateMessagesList(each){
 			<div class='messages-subtitle'>${each.subtitle}</div>
 		</div>
 		<div class='messages-updatedDate'>${datestring}</div>
-		<div class='delete-button-container'><button class='delete-button' tabindex='-1'><img class='delete-img' src='/img/white-delete-icon.svg'/></button></div>
+		<div class='delete-button-container'><button class='delete-button' tabindex='-1'><img class='delete-img' src='/img/white-delete-icon.svg' alt='Delete Icon'/></button></div>
 	</div>
 	
 	<li class='list-item list-item-separator'></li>
@@ -97,11 +93,11 @@ function generateMessagesList(each){
 function generateIntroTexteditorElements(){
 	return `
 	<h3 class="article_title" placeholder="New Title">Textbottle</h3>
-	<h4>A beautiful way to write your ideas</h4>
+	<h4>A simple online text editor</h4>
 	<p></p><blockquote>We write to taste life twice, in the moment and in retrospect - Anaïs Nin</blockquote><p></p>
-	<h3>It's About Your Writing</h3>
+	<h3>Really, try it!</h3>
 	<p>This is an <a href="https://https://en.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a> editor, which means that <i><b>autoformatting</b></i> is applied in this editing space.&nbsp; It is a connected way to visualize your writing.&nbsp;&nbsp;</p>
-	<p>All your writings will be saved automatically and will be accessible in the <i>left panel</i> after you log in or sign up.</p>
+	<p>All your writings will be saved automatically and will be accessible after you log in or sign up.</p>
 	`
 }
 
@@ -116,5 +112,16 @@ function generateSignOutElements(result){
 	<div id='signoutfullname'>${result.firstname} ${result.lastname}</div>
 	<div id='signoutemail'>${result.email}</div>
 	<button class='logoutbutton' tabindex='-1'>Sign Out</button>
+	`
+}
+
+function generateArticleMenuElements(){
+	return `
+	<div class='article-menu'>
+		<div class='logoptionscontainer'>
+				<div class='logoptions'></div>
+		</div>
+		<div class='autosavestatus'></div>
+	</div>
 	`
 }

@@ -10,7 +10,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 router.get('/', jwtAuth, (req, res) => {
   if (req.user){
     Messages
-    .find({account_id: req.user.id})
+    .find({user_id: req.user.id})
     .sort({updatedDate: 'desc'})
 		.then(messages => {
       res.json(messages.map(message => {
@@ -37,11 +37,11 @@ router.get('/', jwtAuth, (req, res) => {
 router.post('/', jwtAuth, (req, res) => {
   let {fullcontent, title, subtitle} = req.body;
 	if (req.user){
-    let account_id = req.user.id;
+    let user_id = req.user.id;
     Messages
     .create(
       {
-        account_id,
+        user_id,
         title,
         subtitle,
         fullcontent

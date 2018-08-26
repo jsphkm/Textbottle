@@ -1,7 +1,7 @@
 const uuid = require('uuid');
 const express = require('express');
 const router = express.Router();
-const {Accounts} = require('./models');
+const {Users} = require('./models');
 const passport = require('passport');
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
@@ -9,7 +9,7 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 router.get('/', jwtAuth, (req, res) => {
   if (req.user){
-    Accounts
+    Users
 		.findById(req.user.id)
 		.then(post => res.json(
       {
@@ -53,11 +53,15 @@ router.post('/', (req, res) => {
       message: 'Incorrect field type: expected string',
       location: nonStringField
     });
-	}
+  }
 	
 	const explicityTrimmedFields = ['email', 'password'];
-  const nonTrimmedField = explicityTrimmedFields.find(
-    field => req.body[field].trim() !== req.body[field]
+  let nonTrimmedField = explicityTrimmedFields.find(
+    field => {
+      if (req.body[field].trim() !== req.body[field]) {
+        return field;
+      }
+    }
   );
 
   if (nonTrimmedField) {
@@ -82,14 +86,18 @@ router.post('/', (req, res) => {
     }
   };
   const tooSmallField = Object.keys(sizedFields).find(
-    field =>
-      'min' in sizedFields[field] &&
-            req.body[field].trim().length < sizedFields[field].min
+    field => {
+      if ('min' in sizedFields[field] && req.body[field].trim().length < sizedFields[field].min){
+        return field;
+      }
+    }
   );
   const tooLargeField = Object.keys(sizedFields).find(
-    field =>
-      'max' in sizedFields[field] &&
-            req.body[field].trim().length > sizedFields[field].max
+    field => {
+      if ('max' in sizedFields[field] && req.body[field].trim().length > sizedFields[field].max){
+        return field;
+      }
+    }
 	);
 	
 	if (tooSmallField || tooLargeField) {
@@ -109,29 +117,29 @@ router.post('/', (req, res) => {
   firstname = firstname.trim();
 	lastname = lastname.trim();
 	
-	return Accounts.find({email})
+	return Users.find({email})
     .count()
     .then(count => {
       if (count > 0) {
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
-          message: 'Email already taken',
+          message: 'Email is already taken',
           location: 'email'
         });
       }
-      return Accounts.hashPassword(password);
+      return Users.hashPassword(password);
     })
     .then(hash => {
-      return Accounts.create({
+      return Users.create({
 				firstname,
 				lastname,
 				email,
         password: hash
       });
     })
-    .then(account => {
-      return res.status(201).json(account.serialize());
+    .then(user => {
+      return res.status(201).json(user.serialize());
     })
     .catch(err => {
       if (err.reason === 'ValidationError') {
@@ -141,19 +149,9 @@ router.post('/', (req, res) => {
     });
 });
 
-// Never expose all your users like below in a prod application
-// we're just doing this so we have a quick way to see
-// if we're creating users. keep in mind, you can also
-// verify this in the Mongo shell.
-// router.get('/', (req, res) => {
-//   return Accounts.find()
-//     .then(accounts => res.json(accounts.map(account => account.serialize())))
-//     .catch(err => res.status(500).json({message: 'Internal server error'}));
-// });
-
 router.delete('/', (req, res) => {
   if (req.user){
-    Accounts
+    Users
 		.findByIdAndRemove(req.user.id)
 		.then(() => {
 			res.status(204).json({message: 'success'});
@@ -180,9 +178,9 @@ router.put('/:id', (req, res) => {
 		}
 	});
 
-	Accounts
+	Users
 		.findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
-		.then(updatedAccount => res.status(204).end())
+		.then(updatedUser => res.status(204).end())
 		.catch(err => res.status(500).json({message: 'Internal Server Error'}));
 });
 
