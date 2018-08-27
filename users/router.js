@@ -33,6 +33,7 @@ router.post('/', (req, res) => {
 	const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
+    console.log('before missing field')
     return res.status(422).json({
       code: 422,
       reason: 'ValidationError',
@@ -47,6 +48,7 @@ router.post('/', (req, res) => {
   );
 
   if (nonStringField) {
+    console.log('before incorrect field');
     return res.status(422).json({
       code: 422,
       reason: 'ValidationError',
@@ -65,6 +67,7 @@ router.post('/', (req, res) => {
   );
 
   if (nonTrimmedField) {
+    console.log('before whitespace');
     return res.status(422).json({
       code: 422,
       reason: 'ValidationError',
@@ -101,6 +104,7 @@ router.post('/', (req, res) => {
 	);
 	
 	if (tooSmallField || tooLargeField) {
+    console.log('before at least');
     return res.status(422).json({
       code: 422,
       reason: 'ValidationError',
@@ -113,14 +117,15 @@ router.post('/', (req, res) => {
     });
 	}
 	
-	let {email, password, firstname = '', lastname = ''} = req.body;
-  firstname = firstname.trim();
-	lastname = lastname.trim();
-	
-	return Users.find({email})
-    .count()
+	//let {email, password, firstname, lastname} = req.body;
+  // firstname = req.body.firstname.trim();
+	// lastname = req.body.lastname.trim();
+
+  return Users
+    .findOne({email: req.body.email})
     .then(count => {
-      if (count > 0) {
+      if (count) {
+        console.log('before duplicate');
         return Promise.reject({
           code: 422,
           reason: 'ValidationError',
@@ -128,13 +133,14 @@ router.post('/', (req, res) => {
           location: 'email'
         });
       }
-      return Users.hashPassword(password);
+      return Users.hashPassword(req.body.password);
     })
     .then(hash => {
+      console.log('before create');
       return Users.create({
-				firstname,
-				lastname,
-				email,
+				firstname: req.body.firstname.trim(),
+				lastname: req.body.lastname.trim(),
+				email: req.body.email,
         password: hash
       });
     })
