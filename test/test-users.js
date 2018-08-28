@@ -10,7 +10,7 @@ const {app, runServer, closeServer} = require('../server');
 const {JWT_SECRET, TEST_DATABASE_URL} = require('../config');
 
 function seedUserData(firstnamefaker, lastnamefaker, emailfaker, passwordfaker) {
-  Users.hashPassword(passwordfaker)
+  return Users.hashPassword(passwordfaker)
   .then(hash => {
     return Users.create({
       firstname: firstnamefaker,

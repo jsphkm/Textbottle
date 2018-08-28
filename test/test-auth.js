@@ -10,13 +10,13 @@ const {Users} = require('../users/models');
 const {app, runServer, closeServer} = require('../server');
 const {JWT_SECRET, TEST_DATABASE_URL} = require('../config');
 
-function seedLoginData(firstname, lastname, email, password) {
-  Users.hashPassword(password)
+function seedLoginData(firstnamefaker, lastnamefaker, emailfaker, passwordfaker) {
+  return Users.hashPassword(passwordfaker)
   .then(hash => {
     return Users.create({
-      firstname,
-      lastname,
-      email,
+      firstname: firstnamefaker,
+      lastname: lastnamefaker,
+      email: emailfaker,
       password: hash
     });
   })
@@ -24,8 +24,10 @@ function seedLoginData(firstname, lastname, email, password) {
 
 function generateLoginData() {
   return {
-    email: faker.internet.email(),
-    password: faker.internet.password()
+    firstnamefaker: faker.name.firstName(),
+    lastnamefaker: faker.name.lastName(),
+    emailfaker: faker.internet.email(),
+    passwordfaker: faker.internet.password()
   };
 }
 
@@ -36,16 +38,14 @@ function tearDownDb() {
 
 
 describe('Auth endpoints', function() {
-  const {email, password} = generateLoginData();
-  const firstname = faker.name.firstName();
-  const lastname = faker.name.lastName();
+  const {firstnamefaker, lastnamefaker, emailfaker, passwordfaker} = generateLoginData();
 
   before(function() {
     return runServer(TEST_DATABASE_URL);
   });
 
   beforeEach(function() {
-    return seedLoginData(firstname, lastname, email, password);
+    return seedLoginData(firstnamefaker, lastnamefaker, emailfaker, passwordfaker);
   });
 
   afterEach(function() {
@@ -60,6 +60,7 @@ describe('Auth endpoints', function() {
     it('should reject requests with invalid credentials', function() {
       return chai.request(app)
         .post('/api/auth/login')
+        .send({username: '', password: ''})
         .then(res => {
           expect(res).to.have.status(400);
         })
@@ -67,7 +68,7 @@ describe('Auth endpoints', function() {
     it('should reject requests with invalid emails', function() {
       return chai.request(app)
         .post('/api/auth/login')
-        .send({email: 'invalidemail', password})
+        .send({username: 'invalidemail', password: passwordfaker})
         .then(res => {
           expect(res).to.have.status(401);
         });
@@ -75,7 +76,7 @@ describe('Auth endpoints', function() {
     it('should reject requests with invalid passwords', function() {
       return chai.request(app)
         .post('/api/auth/login')
-        .send({email, password: 'invalidpassword'})
+        .send({username: emailfaker, password: 'invalidpassword'})
         .then(res => {
           expect(res).to.have.status(401);
         });
@@ -83,7 +84,7 @@ describe('Auth endpoints', function() {
     it('should return an auth token', function() {
       return chai.request(app)
         .post('/api/auth/login')
-        .send(generateLoginData())
+        .send({username: emailfaker, password: passwordfaker})
         .then(res => {
           expect(res).to.have.status(200);
           expect(res.body).to.be.an('object');
@@ -92,13 +93,6 @@ describe('Auth endpoints', function() {
           const payload = jwt.verify(token, JWT_SECRET, {
             algorithm: ['HS256']
           });
-          console.log(payload.user)
-          // expect(payload.user).to.deep.equal({
-          //   firstname,
-          //   lastname,
-          //   email,
-            
-          // })
         })
     })
   })
