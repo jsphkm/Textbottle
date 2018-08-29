@@ -111,7 +111,7 @@ function generateSignOutElements(result){
 	return `
 	<div id='signoutfullname'>${result.firstname} ${result.lastname}</div>
 	<div id='signoutemail'>${result.email}</div>
-	<button class='logoutbutton' z-index='4'>Sign Out</button>
+	<button class='logoutbutton' z-index='4' title='Sign Out'>Sign Out</button>
 	`
 }
 

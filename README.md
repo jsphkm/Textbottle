@@ -9,9 +9,15 @@ This is an web-based WYSIWYG editor.
 
 * [Live Demo](https://guarded-woodland-18277.herokuapp.com)
 
+# Login Info (for testing)
+ - email: john@doe.com
+ - password: passwordpassword
+
+ You will be able to view a couple of excerpts from actual Medium articles.
+
 ## Editor
 
-This editor provides a few formatting options, such as headers, bold, italics and quotes, which is styled similarly to Medium.
+This editor provides a few formatting options, such as headers, bold, italics, quotes, and hyperlinks, which are styled similarly to Medium.
 It archives the writing with the following format:
 
   - First line of the writing: Title

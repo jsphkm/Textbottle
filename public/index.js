@@ -78,7 +78,6 @@ function loginReq(query){
 
 function renderLoggedInElements(){
 	if (localStorage.getItem('token') == null) {
-		//$('.logoptions').html(`<button class='loginbutton'>Sign In</button>`);
 		if ($('.logoptions')){
 			$('.logoptions').html('');
 		}
@@ -88,7 +87,6 @@ function renderLoggedInElements(){
 		$('#texteditor').html(generateIntroTexteditorElements());
 	}
 	else {
-		//history.pushState(null, null, 'me');
 		$('.panel').fadeOut(100, function(){
 			$('.panel').hide()
 				.html(generatePanelElements()).promise()
@@ -126,7 +124,6 @@ function renderWritingsList(result){
 
 function settingsHandler(){
 	$(document).on('click', '.settingsbutton', function() {
-		// TODO: Fetch account data and let user modify & update it
 		fetchaccountData();
 	});
 }
@@ -175,8 +172,7 @@ function fetchmessagesData(){
 
 function sidepaneHandler(){
 	$(document).delegate('.summary-list', 'click', function(e){
-		let messageid = $(this).data("message-id")
-		//history.pushState(null, null, _href);
+		let messageid = $(this).data("message-id");
 		loadContent(messageid);
 		currentmessageId = messageid;
 		$('.summary-list').removeClass('active');
@@ -423,7 +419,6 @@ function deletebuttonHandler(){
 let s,
 TextEditor = {
 	settings: {
-		// list all variables here
 		editable: document.getElementById('texteditor')
 	},
 
@@ -442,15 +437,7 @@ TextEditor = {
 				selectionRange = document.createRange();
 				selectionRange = selection.getRangeAt(0);
 				caretPos = selectionRange.endOffset;
-
 				TextEditor.getSelectionText();
-	
-			}
-			if (e.target.activeElement.contentEditable !== 'true') {
-				toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0]
-				if (toolbarElement.classList.contains('formatting-toolbar-active')){
-					toolbarElement.classList.remove('formatting-toolbar-active');
-				}
 			}
 		});
 	
@@ -532,6 +519,8 @@ TextEditor = {
 				id: 'addressform'
 			}).append(newinput);
 			$('#formattingoptions').html(newform);
+			let toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0]
+			toolbarElement.classList.add('formatting-toolbar-active')
 			$('#addressinput').focus();
 		})
 	
