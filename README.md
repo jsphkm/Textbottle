@@ -11,12 +11,12 @@ This is an web-based WYSIWYG editor.
 
 ## Editor
 
-This editor provides a few formatting options available which is styled similarly to Medium.
+This editor provides a few formatting options, such as headers, bold, italics and quotes, which is styled similarly to Medium.
 It archives the writing with the following format:
 
-  - First line: Title
-  - Second line: Subtitle
-  - The entire writing as a full content
+  - First line of the writing: Title
+  - Second line of the writing: Subtitle
+  - The entire writing: Full content
   - Last edited date
 
 This editor has an auto-save feature.  The writing will be automatically saved after a certain amount of time has passed when the user has stopped typing.
@@ -27,10 +27,10 @@ The hamburger menu will 'pull and squeeze' in wide display, or it will 'pop-over
 The writings will be listed in chronological order of creation with the latest on the top to the oldest on the bottom.
 
 ## Built/Tested With
-Express
-Mongo
-Mongoose
-Chai
-Passport
-Heroku
-Travis
+ - Express
+ - Mongo
+ - Mongoose
+ - Chai
+ - Passport
+ - Heroku
+ - Travis
