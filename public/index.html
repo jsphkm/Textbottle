@@ -12,10 +12,10 @@
     <title>Textbottle</title>
 </head>
 <body> 
-    <header>
+    <header role='banner'>
         <div class='topnav-wrapper'>
             <div class='box-left'>
-                <button class='hamburgerbutton'>
+                <button class='hamburgerbutton' z-index='1' role='button'>
                     <div class='hamburgericon'>
                         <div class='bar'></div>
                         <div class='bar'></div>
@@ -25,25 +25,20 @@
             </div>
             <div class='title'>Textbottle</div>
             <div class='box-right'>
-                <button class='newwriting-button'>
+                <button class='newwriting-button' z-index='2'>
                     <img class='new-icon' src='/img/new-icon.svg' alt='New Writing Icon'/>
                 </button>
             </div>
         </div>
     </header>
-    <nav class='hidepanel'>
-        <div class='divider'></div>
-        <div class='spacer'></div>
-        <div class='panel'></div>
-    </nav>
     <section>
         <div class='spacer'></div>
-        <main>
+        <main role='main'>
             <article>
                 <div class='article-menu-container'>
   
                 </div>
-                <div id='texteditor' contentEditable=true autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                <div id='texteditor' contentEditable=true autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" z-index='3'>
                 </div>
                 <div class='formatting-toolbar-container'>
                     <div id='formattingoptions'></div>
@@ -51,6 +46,11 @@
             </article>
         </main>
     </section>
+    <nav class='hidepanel'>
+        <div class='divider'></div>
+        <div class='spacer'></div>
+        <div class='panel'></div>
+    </nav>
     
     <script type="text/javascript" src="elements.js"></script>
     <script type="text/javascript" src="index.js"></script>

@@ -97,7 +97,7 @@ function renderLoggedInElements(){
 					$('#texteditor').html(generateNewTexteditorElements());
 					fetchaccountData()
 					.done(result => {
-						$('.logoptions').html(`<button class='firstname'></button>`);
+						$('.logoptions').html(`<div class='firstname'></div>`);
 						$('.firstname').html(result.firstname);
 						$('.account-items-container').html(generateSignOutElements(result));
 					}).fail(err => {console.error(err)})
@@ -108,7 +108,6 @@ function renderLoggedInElements(){
 					}).fail(err => {console.error(err)})
 				})
 				.then($('.panel').fadeIn(200, function(){
-					//$('#texteditor').focus();
 				}));
 		})
 	}
@@ -287,12 +286,6 @@ function watchSubmit(){
 	})
 }
 
-function signinbuttonHandler(){
-	$(document).on('click', '.loginbutton', function(){
-		//TODO: When clicked just simply slide out the left panel
-	})
-}
-
 function createaccountHandler(){
 	$(document).on('click', '.createaccountLink', function(){
 		$('.panel').html(generateCreateAccountElements());
@@ -406,7 +399,6 @@ function newWritingButtonHandler(){
 		}
 		$('#texteditor').html(generateNewTexteditorElements());
 		$('.listofmessagescontainer > .summary-list').removeClass('active');
-		//$('#texteditor').focus();
 	})
 }
 
@@ -460,13 +452,6 @@ TextEditor = {
 					toolbarElement.classList.remove('formatting-toolbar-active');
 				}
 			}
-		});
-	
-		$(document).on('blur', '#texteditor', function(e){
-			toolbarElement = document.getElementsByClassName('formatting-toolbar-container')[0]
-				if (toolbarElement.classList.contains('formatting-toolbar-active')){
-					toolbarElement.classList.remove('formatting-toolbar-active');
-				}
 		});
 	
 		s.editable.addEventListener('input', function(e) {
@@ -749,7 +734,6 @@ function loadmaster(){
 	renderToolbarElements();
 	watchSubmit();
 	renderLoggedInElements();
-	signinbuttonHandler();
 	createaccountHandler();
 	settingsHandler();
 	logoutRequest();
