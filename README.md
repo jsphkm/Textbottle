@@ -32,7 +32,7 @@ This editor has an auto-save feature.  The writing will be automatically saved a
 
 <img src='https://user-images.githubusercontent.com/28643797/44765688-ba64f000-ab0a-11e8-9291-542ec310234d.png' alt='mobile-image' width='200' />
 
-The hamburger menu will 'push and squeeze' in wide display, or it will 'pop-over' when viewing in small display sizes.
+The hamburger menu will have the sidepane 'push and squeeze' in wide display, or 'pop-over' when viewing in small display sizes.
 The writings will be listed in chronological order of creation with the latest on the top to the oldest on the bottom.
 
 ## Built/Tested With
