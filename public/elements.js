@@ -40,12 +40,12 @@ function generateSignInElements(){
 
 function generateFormattingButtonElements(){
 	return `
-	<button id='boldbutton'>B</button>
-	<button id='italicizebutton'>i</button>
-	<button id='linkbutton'>href</button>
-	<button id='headerbutton'>T</button>
-	<button id='subheaderbutton'>T</button>
-	<button id='quotebutton'>&#8220;quote&#8221;</button>
+	<button id='boldbutton' title='Bold'>B</button>
+	<button id='italicizebutton' title='Italics'>i</button>
+	<button id='linkbutton' title='Hyperlink'>href</button>
+	<button id='headerbutton' title='Large Header'>T</button>
+	<button id='subheaderbutton' title='Small Header'>T</button>
+	<button id='quotebutton' title='Quote'>&#8220;quote&#8221;</button>
 	`
 }
 
@@ -83,7 +83,7 @@ function generateMessagesList(each){
 			<div class='messages-subtitle'>${each.subtitle}</div>
 		</div>
 		<div class='messages-updatedDate'>${datestring}</div>
-		<div class='delete-button-container'><button class='delete-button' tabindex='-1'><img class='delete-img' src='/img/white-delete-icon.svg' alt='Delete Icon'/></button></div>
+		<div class='delete-button-container'><button class='delete-button' tabindex='-1'><img class='delete-img' src='/img/white-delete-icon.svg' alt='Delete Icon' title='Delete'/></button></div>
 	</div>
 	
 	<li class='list-item list-item-separator'></li>
