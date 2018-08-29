@@ -7,7 +7,7 @@ This is an web-based WYSIWYG editor.
 
 * [Live Demo](https://guarded-woodland-18277.herokuapp.com)
 
-# Login Info (for testing)
+### Login Info (for testing)
  - email: john@doe.com
  - password: passwordpassword
 
@@ -18,14 +18,15 @@ This is an web-based WYSIWYG editor.
 ![editor](https://user-images.githubusercontent.com/28643797/44765385-4ece5300-ab09-11e8-9980-fa03cff01c28.png)
 
 This editor provides a few formatting options, which are bold, italics, hyperlinks, headers, and quotes.  These are styled similarly to Medium.
-It saves the writing with the following format:
+
+Auto-save
+===
+This editor has an auto-save feature.  The writing will be automatically saved after a certain amount of time has passed when the user has stopped typing. It saves the writing with the following format:
 
   - Title: First line of the writing
   - Subtitle: Second line of the writing
   - Full content: The entire writing (innerHTML format)
   - Last edited date
-
-This editor has an auto-save feature.  The writing will be automatically saved after a certain amount of time has passed when the user has stopped typing.
 
 ## Side Pane
 
