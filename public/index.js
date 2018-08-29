@@ -607,6 +607,7 @@ TextEditor = {
 				selection.removeAllRanges();
 				selection.addRange(selectionRange);
 				document.execCommand('createLink', false, `https://${address}`);
+				$('#formattingoptions').html(generateFormattingButtonElements());
 			}
 			return false;
 		})
