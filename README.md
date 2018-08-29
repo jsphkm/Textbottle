@@ -5,7 +5,7 @@ This is an web-based WYSIWYG editor.
 
 ## Demo
 
-* [Live Demo](https://guarded-woodland-18277.herokuapp.com)
+* [Live Demo](https://textbottle.herokuapp.com)
 
 ## Login Info (for testing)
  - email: john@doe.com
