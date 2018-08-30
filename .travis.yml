@@ -7,3 +7,4 @@ deploy:
   app: guarded-woodland-18277
   on:
     repo: jsphkm/Textbottle
+  services: mongodb
