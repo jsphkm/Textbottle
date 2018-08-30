@@ -1,5 +1,6 @@
 language: node_js
 node_js: node
+services: mongodb
 deploy:
   provider: heroku
   api_key:
@@ -7,4 +8,3 @@ deploy:
   app: textbottle
   on:
     repo: jsphkm/Textbottle
-  services: mongodb
