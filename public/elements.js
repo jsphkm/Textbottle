@@ -34,6 +34,8 @@ function generateSignInElements(){
 					<input id='loginpassword' type='password' placeholder='Password' required>
 					<input class='signin-button' type='submit' value='Sign in'>
 			</form>
+			<div>Test User: john@doe.com</div>
+			<div>Test Pass: passwordpassword</div>
 	</div>
 	`
 }
