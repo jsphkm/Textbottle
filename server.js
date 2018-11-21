@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const passport = require('passport');
 app.use(express.json());
-app.use(morgan('common'));
+// app.use(morgan('common'));
 app.use(express.static('public'));
 
 mongoose.Promise = global.Promise;
