@@ -4,8 +4,7 @@
   "description": "Text response application",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node server.js"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
