@@ -64,7 +64,6 @@ nav {
   z-index: 100;
 	width: 320px;
 	height: 100vh;
-  overflow-y: auto;
 	position: fixed;
 	transition: transform 0.3s ease-in-out;
 }
